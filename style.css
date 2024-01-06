@@ -1,0 +1,28 @@
+body {
+  margin: 0;
+  overflow: hidden;
+}
+
+canvas {
+  display: block;
+}
+
+#lego-list {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  list-style-type: none;
+  padding: 0;
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 10px;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.lego-item {
+  padding: 5px;
+  cursor: pointer;
+  user-select: none;
+}
