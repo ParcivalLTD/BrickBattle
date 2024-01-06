@@ -26,3 +26,23 @@ canvas {
   cursor: pointer;
   user-select: none;
 }
+
+#object-bar {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 200px;
+  height: 100%;
+  background-color: #f0f0f0;
+  overflow-y: auto;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+#object-bar img {
+  display: block;
+  width: 100%;
+  height: auto;
+  cursor: pointer;
+  margin-bottom: 10px;
+}

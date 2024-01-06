@@ -3,9 +3,7 @@ import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { STLLoader } from "three/examples/jsm/loaders/STLLoader.js";
 import { TransformControls } from "three/examples/jsm/controls/TransformControls.js";
-import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer.js";
-import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass.js";
-import { OutlinePass } from "three/examples/jsm/postprocessing/OutlinePass.js";
+import { DragControls } from "three/examples/jsm/controls/DragControls.js";
 
 const scene = new THREE.Scene();
 
@@ -26,8 +24,7 @@ camera.position.set(-15, 15, 15);
 
 renderer.render(scene, camera);
 
-const light = new THREE.DirectionalLight(0xffffff, 2);
-light.position.set(3, 1, 2);
+const light = new THREE.HemisphereLight(0xffffff, 0x080820, 1);
 scene.add(light);
 
 const orbitControls = new OrbitControls(camera, renderer.domElement);
@@ -36,14 +33,13 @@ orbitControls.minPolarAngle = 0;
 orbitControls.maxPolarAngle = Math.PI / 2.5;
 scene.add(transformControls);
 
-transformControls.setTranslationSnap(4);
+transformControls.setTranslationSnap(2);
 
 transformControls.setMode("translate");
 
 transformControls.addEventListener("objectChange", function () {
   const object = transformControls.object;
 
-  // Ensure the object doesn't go under z=0
   const minY = 0;
   if (object.position.y < minY) {
     object.position.y = minY;
@@ -60,6 +56,11 @@ transformControls.addEventListener("dragging-changed", function (event) {
 transformControls.addEventListener("objectChange", function () {
   renderer.render(scene, camera);
 });
+
+const gridHelper = new THREE.GridHelper(100, 100);
+scene.add(gridHelper);
+
+/* ----------------------------- */
 
 function initObject(name, color, path) {
   loader.load(path, function (geometry) {
@@ -92,7 +93,12 @@ function initObject(name, color, path) {
   });
 }
 
-initObject("brick", 0xff6347, "resources/models/3001.stl");
+document.getElementById("object1").addEventListener("click", function () {
+  initObject("object1", 0xff0000, "resources/models/3001.stl");
+});
+document.getElementById("object2").addEventListener("click", function () {
+  initObject("object2", 0x00ff00, "resources/models/3001.stl");
+});
 
 loader.load("resources/models/782.stl", function (geometry) {
   geometry.computeBoundingBox();
@@ -103,7 +109,7 @@ loader.load("resources/models/782.stl", function (geometry) {
   baseplate.castShadow = true;
   baseplate.receiveShadow = true;
 
-  baseplate.scale.set(0.3, 0.3, 0.3);
+  baseplate.scale.set(0.25, 0.25, 0.25);
   baseplate.rotateX(THREE.MathUtils.degToRad(-90));
 
   scene.add(baseplate);
