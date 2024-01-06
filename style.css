@@ -41,8 +41,17 @@ canvas {
 
 #object-bar img {
   display: block;
-  width: 100%;
+  width: 80px;
   height: auto;
   cursor: pointer;
   margin-bottom: 10px;
+}
+
+#object-bar img:hover {
+  opacity: 0.8;
+}
+
+#object-bar img:active {
+  width: 70px;
+  transition: all 0.1s ease-in-out;
 }
