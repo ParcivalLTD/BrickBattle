@@ -8,19 +8,21 @@ import { DragControls } from "three/examples/jsm/controls/DragControls.js";
 const scene = new THREE.Scene();
 
 const loader = new STLLoader();
-const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+
+const canvas = document.querySelector("#canvas");
 
 const renderer = new THREE.WebGLRenderer({
-  canvas: document.querySelector("#canvas"),
+  canvas: canvas,
 });
 
 renderer.setClearColor(0xffffff);
 
 renderer.setPixelRatio(window.devicePixelRatio);
-renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.setSize(canvas.clientWidth, canvas.clientHeight);
 renderer.shadowMap.enabled = true;
 
-camera.position.set(-15, 15, 15);
+const camera = new THREE.PerspectiveCamera(75, canvas.clientWidth / canvas.clientHeight, 0.1, 1000);
+camera.position.set(-8, 20, 30);
 
 renderer.render(scene, camera);
 
@@ -59,9 +61,6 @@ transformControls.addEventListener("dragging-changed", function (event) {
 transformControls.addEventListener("objectChange", function () {
   renderer.render(scene, camera);
 });
-
-const gridHelper = new THREE.GridHelper(100, 100);
-scene.add(gridHelper);
 
 /* ----------------------------- */
 let raycaster = new THREE.Raycaster();
@@ -159,8 +158,8 @@ loader.load("resources/models/782.stl", function (geometry) {
 
 let selectedObject = null;
 const gridSize = 2;
-let highlightedMaterial = new THREE.MeshStandardMaterial({ color: 0x00ff00, emissive: 0x00ff00, transparent: true, opacity: 0.5 });
-let defaultMaterial = new THREE.MeshStandardMaterial({ color: color });
+let highlightedMaterial = new THREE.MeshStandardMaterial({ color: 0xffffff, transparent: true, opacity: 0.75 });
+let clock = new THREE.Clock();
 
 function onDocumentKeyDown(event) {
   removeHighlight(selectedObject);
@@ -168,16 +167,16 @@ function onDocumentKeyDown(event) {
   let offset = new THREE.Vector3(0, 0, 0);
 
   switch (event.key) {
-    case "ArrowUp":
+    case "w":
       offset.z = -gridSize;
       break;
-    case "ArrowDown":
+    case "s":
       offset.z = gridSize;
       break;
-    case "ArrowLeft":
+    case "a":
       offset.x = -gridSize;
       break;
-    case "ArrowRight":
+    case "d":
       offset.x = gridSize;
       break;
     case "Shift":
@@ -192,15 +191,18 @@ function onDocumentKeyDown(event) {
   moveObject(selectedObject, offset);
 }
 
-function removeHighlight(object) {
-  if (object) {
-    object.material = defaultMaterial;
-  }
-}
+let originalMaterial = null;
 
 function highlightObject(object) {
   if (object) {
+    originalMaterial = object.material;
     object.material = highlightedMaterial;
+  }
+}
+
+function removeHighlight(object) {
+  if (object) {
+    object.material = originalMaterial;
   }
 }
 
@@ -224,13 +226,20 @@ function onDragStart(event) {
         selectedObject = object;
         highlightObject(selectedObject);
       }
+    } else {
+      removeHighlight(selectedObject);
+      selectedObject = null;
     }
+  } else {
+    removeHighlight(selectedObject);
+    selectedObject = null;
   }
 }
 
 function getIntersects(x, y) {
-  x = (x / window.innerWidth) * 2 - 1;
-  y = -(y / window.innerHeight) * 2 + 1;
+  const rect = canvas.getBoundingClientRect();
+  x = ((x - rect.left) / rect.width) * 2 - 1;
+  y = -((y - rect.top) / rect.height) * 2 + 1;
   raycaster.setFromCamera({ x, y }, camera);
   return raycaster.intersectObjects(scene.children);
 }
@@ -254,8 +263,23 @@ window.addEventListener("keydown", function (event) {
   }
 });
 
+const topCanvas = document.getElementById("top-view");
+const topViewRenderer = new THREE.WebGLRenderer({ canvas: topCanvas });
+
+const aspectRatio = window.innerWidth / window.innerHeight;
+const viewSize = 45;
+const topViewCamera = new THREE.OrthographicCamera((-aspectRatio * viewSize) / 2, (aspectRatio * viewSize) / 2, viewSize / 2, -viewSize / 2, 0.1, 1000);
+
+topViewCamera.position.y = 20;
+topViewCamera.lookAt(0, 0, 0);
+
 function animate() {
   requestAnimationFrame(animate);
+
+  topViewRenderer.render(scene, topViewCamera);
+
+  let time = clock.getElapsedTime();
+  highlightedMaterial.opacity = ((Math.sin(time * 7) + 1) / 2) * 0.5 + 0.5;
 
   orbitControls.update();
 

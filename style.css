@@ -3,45 +3,36 @@ body {
   overflow: hidden;
 }
 
-canvas {
+#builderDiv {
+  transform: scale(1);
+}
+
+#canvas {
   display: block;
-}
-
-#lego-list {
-  position: absolute;
-  top: 10px;
-  left: 10px;
-  list-style-type: none;
-  padding: 0;
-  background-color: #f0f0f0;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  padding: 10px;
-  max-height: 200px;
-  overflow-y: auto;
-}
-
-.lego-item {
-  padding: 5px;
-  cursor: pointer;
-  user-select: none;
+  height: 600px !important;
+  width: 600px !important;
+  border-bottom: 3px solid black;
+  border-top: 3px solid black;
 }
 
 #object-bar {
-  position: absolute;
-  right: 0;
-  top: 0;
-  width: 200px;
-  height: 100%;
-  background-color: #f0f0f0;
-  overflow-y: auto;
+  width: 100px;
+  height: 600px;
+  background-color: #c5c5c5;
   padding: 10px;
   box-sizing: border-box;
+  overflow-x: hidden;
+  border-radius: 12px 0px 0px 12px;
+  border-left: 3px solid black;
+  border-bottom: 3px solid black;
+  border-top: 3px solid black;
 }
 
 #object-bar img {
   display: block;
   width: 80px;
+  padding-right: 20px;
+
   height: auto;
   cursor: pointer;
   margin-bottom: 10px;
@@ -51,7 +42,60 @@ canvas {
   opacity: 0.8;
 }
 
-#object-bar img:active {
-  width: 70px;
-  transition: all 0.1s ease-in-out;
+#sideBar {
+  margin: 0;
+  line-height: 0px;
+}
+
+#top-view {
+  width: 160px;
+  height: 160px;
+  overflow: hidden;
+  border-radius: 0px 12px 0 0px;
+  border-top: 3px solid black;
+  border-right: 3px solid black;
+}
+
+#chat {
+  line-height: normal;
+  width: 160px;
+  height: 440px;
+  background-color: #c5c5c5;
+  padding: 10px;
+  box-sizing: border-box;
+  overflow-x: hidden;
+  border-radius: 0px 0px 12px 0px;
+  border-right: 3px solid black;
+  border-bottom: 3px solid black;
+  margin-bottom: 0px !important;
+}
+
+#chat::-webkit-scrollbar,
+#object-bar::-webkit-scrollbar {
+  width: 10px;
+}
+
+#chat::-webkit-scrollbar-track,
+#object-bar::-webkit-scrollbar-track {
+  background: #c5c5c5;
+}
+
+#chat::-webkit-scrollbar-thumb,
+#object-bar::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+#chat::-webkit-scrollbar-thumb:hover,
+#object-bar::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+#colorPicker {
+  width: 65px;
+  height: 40px;
+  border-radius: 5px;
+  margin: 0 auto;
+  margin-top: 10px;
+  cursor: pointer;
+  background-color: #555;
 }
