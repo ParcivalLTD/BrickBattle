@@ -26,8 +26,12 @@ camera.position.set(-8, 20, 30);
 
 renderer.render(scene, camera);
 
-const light = new THREE.HemisphereLight(0xffffff, 0x080820, 1);
+const light = new THREE.HemisphereLight(0xffffff, 0x080820, 1.35);
 scene.add(light);
+
+const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
+directionalLight.position.set(1, 1, 1);
+scene.add(directionalLight);
 
 const orbitControls = new OrbitControls(camera, renderer.domElement);
 const transformControls = new TransformControls(camera, renderer.domElement);
@@ -261,6 +265,18 @@ window.addEventListener("keydown", function (event) {
     removeHighlight(selectedObject);
     selectedObject = null;
   }
+
+  if (selectedObject) {
+    const rotationStep = THREE.MathUtils.degToRad(90);
+    switch (event.key) {
+      case "ArrowLeft":
+        selectedObject.rotation.z -= rotationStep;
+        break;
+      case "ArrowRight":
+        selectedObject.rotation.z += rotationStep;
+        break;
+    }
+  }
 });
 
 const topCanvas = document.getElementById("top-view");
@@ -287,3 +303,5 @@ function animate() {
 }
 
 animate();
+
+/* ------------------------------ */

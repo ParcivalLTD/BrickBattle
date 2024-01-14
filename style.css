@@ -19,23 +19,28 @@ body {
   width: 100px;
   height: 600px;
   background-color: #c5c5c5;
-  padding: 10px;
+  overflow-y: hidden;
   box-sizing: border-box;
   overflow-x: hidden;
   border-radius: 12px 0px 0px 12px;
   border-left: 3px solid black;
   border-bottom: 3px solid black;
   border-top: 3px solid black;
+  scroll-behavior: smooth;
+}
+
+.scrollable {
+  overflow-y: scroll;
+  overflow-x: hidden;
+  height: 100%;
 }
 
 #object-bar img {
   display: block;
-  width: 80px;
-  padding-right: 20px;
-
+  width: 65px;
+  margin-left: 10px;
   height: auto;
   cursor: pointer;
-  margin-bottom: 10px;
 }
 
 #object-bar img:hover {
@@ -70,32 +75,34 @@ body {
   margin-bottom: 0px !important;
 }
 
-#chat::-webkit-scrollbar,
-#object-bar::-webkit-scrollbar {
+*::-webkit-scrollbar {
   width: 10px;
 }
 
-#chat::-webkit-scrollbar-track,
-#object-bar::-webkit-scrollbar-track {
+*::-webkit-scrollbar-track {
   background: #c5c5c5;
 }
 
-#chat::-webkit-scrollbar-thumb,
-#object-bar::-webkit-scrollbar-thumb {
+*::-webkit-scrollbar-thumb {
   background: #888;
 }
 
-#chat::-webkit-scrollbar-thumb:hover,
-#object-bar::-webkit-scrollbar-thumb:hover {
+*::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
 
 #colorPicker {
-  width: 65px;
-  height: 40px;
+  width: 75px;
+  height: 50px;
   border-radius: 5px;
   margin: 0 auto;
   margin-top: 10px;
   cursor: pointer;
   background-color: #555;
+  margin-left: 10px;
+}
+
+hr {
+  margin-bottom: 0;
+  margin-top: 0.7rem;
 }
